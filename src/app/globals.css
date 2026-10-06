@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: #15191c;
+  --color-ink-soft: #22282d;
+  --color-amber: #f2a33a;
+  --color-amber-deep: #9a5212;
+  --color-amber-light: #f8cb8a;
+  --color-paper: #f4f2ed;
+  --color-slate: #545c63;
+
+  --font-sans: var(--font-heebo);
+  --font-display: var(--font-secular);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::selection {
+  background: #f2a33a;
+  color: #15191c;
+}
+
+.press {
+  transition: transform 120ms var(--ease-out-soft), background-color 200ms, color 200ms, box-shadow 200ms;
+}
+.press:active {
+  transform: scale(0.97);
+}
+
+@keyframes hero-zoom {
+  from { transform: scale(1.08); opacity: 0.6; }
+  to { transform: scale(1); opacity: 1; }
+}
+.hero-bg {
+  animation: hero-zoom 1600ms var(--ease-out-soft) both;
+}
+
+.blueprint {
+  background-image:
+    linear-gradient(rgba(242, 163, 58, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242, 163, 58, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
