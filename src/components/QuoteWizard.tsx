@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { biz, propertyTypes, services, urgencyOptions, whatsappUrl } from "@/content";
+import { biz, pitchMessage, propertyTypes, services, urgencyOptions, whatsappUrl } from "@/content";
 import { Icon, WhatsAppIcon } from "./Icons";
 
 type Service = (typeof services)[number];
@@ -47,6 +47,7 @@ export default function QuoteWizard() {
         ))}
       </ol>
 
+      <div className="min-h-[29rem] [overflow-anchor:none] sm:min-h-[22rem]">
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={step}
@@ -108,7 +109,7 @@ export default function QuoteWizard() {
                 טיפ: צרפו 2–3 תמונות של המקום, וההצעה תגיע מהר ומדויק יותר.
               </p>
               <a
-                href={whatsappUrl(message)}
+                href={whatsappUrl(pitchMessage(message))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="press flex min-h-14 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 text-lg font-bold text-ink hover:bg-[#2ee372]"
@@ -124,6 +125,7 @@ export default function QuoteWizard() {
           )}
         </motion.div>
       </AnimatePresence>
+      </div>
 
       {step > 0 && (
         <div className="mt-5 flex justify-between text-sm">

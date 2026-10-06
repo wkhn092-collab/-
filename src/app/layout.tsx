@@ -13,7 +13,12 @@ const secular = Secular_One({
   weight: "400",
 });
 
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3017";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "הדמיה פרטית | שיפוצים ואיטום",
   description: "הדמיה פרטית שהוכנה במיוחד. לא פורסמה ברשת.",
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import BeforeAfter from "@/components/BeforeAfter";
 import CountUp from "@/components/CountUp";
@@ -7,9 +8,23 @@ import QuoteWizard from "@/components/QuoteWizard";
 import Reveal, { MotionRoot, Stagger, StaggerItem } from "@/components/Reveal";
 import StickyCta from "@/components/StickyCta";
 import TiltCard from "@/components/TiltCard";
-import { biz, sampleRating, sampleStats, services, whatsappUrl } from "@/content";
+import { biz, pitchMessage, sampleRating, sampleStats, services, whatsappUrl } from "@/content";
 
 const IMG = "/demo/renovation";
+const shareTitle = `${biz.name}: האתר שלך מוכן לצפייה`;
+const shareDescription = "הדמיה פרטית שהוכנה במיוחד בשבילך. דקה לגלול מהטלפון ולראות איך לקוחות ימצאו אותך.";
+
+export const metadata: Metadata = {
+  title: shareTitle,
+  description: shareDescription,
+  openGraph: {
+    title: shareTitle,
+    description: shareDescription,
+    type: "website",
+    locale: "he_IL",
+  },
+  twitter: { card: "summary_large_image", title: shareTitle, description: shareDescription },
+};
 const HIDE_STICKY_ON = ["quote", "contact"];
 
 function IllustrationTag({ className = "" }: { className?: string }) {
@@ -36,7 +51,7 @@ const trustPoints = [
 ];
 
 export default function DemoPage() {
-  const quickMessage = `שלום ${biz.shortName}, הגעתי מהאתר ואשמח להצעת מחיר.`;
+  const quickMessage = pitchMessage();
 
   return (
     <MotionRoot>
@@ -79,7 +94,7 @@ export default function DemoPage() {
             />
             <Image
               src={`${IMG}/hero-apartment.webp`}
-              alt=""
+              alt="סלון מואר בדירה משופצת עם ריצוף פורצלן ויציאה למרפסת"
               fill
               priority
               sizes="(min-width: 768px) 100vw, 1px"
@@ -93,7 +108,7 @@ export default function DemoPage() {
             <div className="max-w-2xl">
               <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber/40 bg-ink/50 px-3 py-1 text-sm text-amber-light">
                 <Icon name="pin" className="size-4" />
-                עובדים ב{biz.area}
+                עובדים {biz.areaIn}
               </p>
               <h1 className="font-display text-4xl leading-[1.15] text-white sm:text-6xl">
                 שיפוץ בלי בלגן.
@@ -183,12 +198,42 @@ export default function DemoPage() {
           </div>
         </section>
 
-        {/* 3. Proof */}
+        {/* 3. Proof: before and after */}
         <section className="bg-white py-20 sm:py-28">
-          <div className="mx-auto max-w-6xl px-5">
-            <SectionTitle eyebrow="לפני ואחרי" title="גררו את הקו, ותראו מה שיפוץ אחד עושה" />
-            <div className="grid items-start gap-12 md:grid-cols-[1.15fr_1fr]">
-              <div>
+          <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 md:grid-cols-2 md:gap-16">
+            <div>
+              <SectionTitle eyebrow="לפני ואחרי" title="גררו את הקו, ותראו מה שיפוץ אחד עושה" />
+              <Reveal className="-mt-4 mb-8 max-w-md text-lg leading-relaxed text-slate">
+                אותו חדר רחצה, לפני השיפוץ ואחריו. בגרסה האמיתית יופיעו כאן העבודות שלך, עם תמונות מהשטח.
+              </Reveal>
+              <Reveal delay={0.08} className="rounded-2xl border border-dashed border-amber-deep/40 bg-paper p-5">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                  <div className="text-center">
+                    <div className="font-display text-3xl text-ink" dir="ltr">
+                      {sampleRating.value.toFixed(1)}
+                    </div>
+                    <div className="flex justify-center gap-0.5 text-amber" aria-hidden>
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <Icon key={i} name="star" className="size-3.5 fill-current" />
+                      ))}
+                    </div>
+                    <p className="mt-1 text-xs text-slate">{sampleRating.count} ביקורות בגוגל</p>
+                  </div>
+                  {sampleStats.map((s) => (
+                    <div key={s.label} className="text-center">
+                      <div className="font-display text-3xl text-ink">
+                        <CountUp to={s.value} />
+                        <span className="text-amber-deep">{s.suffix}</span>
+                      </div>
+                      <p className="mt-1 text-xs text-slate">{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-4 text-xs text-amber-deep">* כל המספרים להמחשה בלבד. בגרסה האמיתית יופיעו הדירוג והנתונים שלך.</p>
+              </Reveal>
+            </div>
+
+            <div>
                 <Reveal className="relative mx-auto max-w-md">
                   <BeforeAfter
                     before={{ src: `${IMG}/bath-before.webp`, alt: "חדר רחצה ישן לפני שיפוץ: אמבטיה עם וילון, אריחים כחולים ואסלה ישנה" }}
@@ -208,48 +253,24 @@ export default function DemoPage() {
                   </a>{" "}
                   · CC BY-SA 2.0
                 </p>
-
-                <Reveal delay={0.08} className="mt-6 rounded-2xl border border-dashed border-amber-deep/40 bg-paper p-5">
-                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                    <div className="text-center">
-                      <div className="font-display text-3xl text-ink">
-                        <CountUp to={sampleRating.value} decimals={1} />
-                      </div>
-                      <div className="flex justify-center gap-0.5 text-amber" aria-hidden>
-                        {Array.from({ length: 5 }, (_, i) => (
-                          <Icon key={i} name="star" className="size-3.5 fill-current" />
-                        ))}
-                      </div>
-                      <p className="mt-1 text-xs text-slate">
-                        <CountUp to={sampleRating.count} /> ביקורות בגוגל
-                      </p>
-                    </div>
-                    {sampleStats.map((s) => (
-                      <div key={s.label} className="text-center">
-                        <div className="font-display text-3xl text-ink">
-                          <CountUp to={s.value} />
-                          <span className="text-amber-deep">{s.suffix}</span>
-                        </div>
-                        <p className="mt-1 text-xs text-slate">{s.label}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="mt-4 text-xs text-amber-deep">* כל המספרים להמחשה בלבד. בגרסה האמיתית יופיעו הדירוג והנתונים שלך.</p>
-                </Reveal>
-              </div>
-
-              <div>
-                <Reveal className="mb-6">
-                  <h3 className="font-display text-2xl text-ink">7 שלבים, בלי הפתעות</h3>
-                  <p className="text-slate">ככה נראה שיפוץ אצלנו, מהתמונה הראשונה בוואטסאפ ועד המפתח.</p>
-                </Reveal>
-                <ProcessTimeline />
-              </div>
             </div>
           </div>
         </section>
 
-        {/* 4. Signature moment */}
+        {/* 4. Process */}
+        <section className="py-20 sm:py-28">
+          <div className="mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-[1fr_1.2fr] md:gap-16">
+            <div className="md:sticky md:top-24 md:self-start">
+              <SectionTitle eyebrow="איך זה עובד" title="7 שלבים, בלי הפתעות" />
+              <Reveal className="-mt-4 max-w-md text-lg leading-relaxed text-slate">
+                ככה נראה שיפוץ אצלנו, מהתמונה הראשונה בוואטסאפ ועד המפתח. כל שלב כתוב מראש, כדי שתדעו בדיוק מה קורה ומתי.
+              </Reveal>
+            </div>
+            <ProcessTimeline />
+          </div>
+        </section>
+
+        {/* 5. Signature moment */}
         <section id="quote" className="blueprint relative isolate scroll-mt-10 overflow-hidden bg-ink py-20 sm:py-28">
           <div className="mx-auto max-w-6xl px-5">
             <Reveal className="mx-auto mb-10 max-w-2xl text-center">
@@ -265,7 +286,7 @@ export default function DemoPage() {
           </div>
         </section>
 
-        {/* 5. Contact */}
+        {/* 6. Contact */}
         <section id="contact" className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
           <SectionTitle eyebrow="יצירת קשר" title="מגיעים אליך, בכל המרכז והשרון" />
           <Reveal className="grid gap-6 rounded-3xl border border-ink/10 bg-white p-6 sm:p-8 md:grid-cols-2">

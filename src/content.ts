@@ -3,6 +3,7 @@ export const biz = {
   shortName: "י.ש שיפוצים",
   tagline: "שיפוצים · איטום · עבודות גמר",
   area: "המרכז והשרון",
+  areaIn: "במרכז ובשרון",
   phone: "050-000-0000",
   phoneHref: "tel:+972500000000",
   hours: [
@@ -12,14 +13,26 @@ export const biz = {
   wazeUrl: "https://waze.com/ul",
 };
 
-export const whatsappUrl = (text: string) => `https://wa.me/?text=${encodeURIComponent(text)}`;
+// Every WhatsApp button in the demo goes to the seller (international format, digits only), not to the lead.
+export const pitch = {
+  whatsapp: "",
+  intro: `היי, ראיתי את ההדמיה של האתר שלי (${biz.name})`,
+};
+
+export const whatsappUrl = (text: string) =>
+  `https://wa.me/${pitch.whatsapp}?text=${encodeURIComponent(text)}`;
+
+export const pitchMessage = (customerMessage?: string) =>
+  customerMessage
+    ? `${pitch.intro}. ניסיתי את האשף, וזו ההודעה שלקוח היה שולח לי:\n\n${customerMessage}`
+    : `${pitch.intro} ואשמח לשמוע עוד.`;
 
 export const services = [
   {
     id: "renovation",
     title: "שיפוץ דירה כללי",
     text: "מתכנון ועד מסירת מפתח: הריסה, חשמל ואינסטלציה, ריצוף, טיח וצבע. קבלן אחד שאחראי על הכול.",
-    icon: "home",
+    icon: "wrench",
   },
   {
     id: "bathroom",

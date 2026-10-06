@@ -5,19 +5,16 @@ import { useEffect, useRef, useState } from "react";
 
 type CountUpProps = { to: number; decimals?: number; duration?: number };
 
-export default function CountUp({ to, decimals = 0, duration = 1.4 }: CountUpProps) {
+// Starts from 75% of the target so a half-finished animation never shows a misleadingly low number.
+export default function CountUp({ to, decimals = 0, duration = 0.8 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const reduce = useReducedMotion();
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(to);
 
   useEffect(() => {
-    if (!inView) return;
-    if (reduce) {
-      setValue(to);
-      return;
-    }
-    const controls = animate(0, to, { duration, ease: [0.22, 1, 0.36, 1], onUpdate: setValue });
+    if (!inView || reduce) return;
+    const controls = animate(to * 0.75, to, { duration, ease: [0.22, 1, 0.36, 1], onUpdate: setValue });
     return () => controls.stop();
   }, [inView, reduce, to, duration]);
 
