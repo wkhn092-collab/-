@@ -15,8 +15,11 @@ export const biz = {
 
 // Every WhatsApp button in the demo goes to the seller (international format, digits only), not to the lead.
 export const pitch = {
-  whatsapp: "",
+  whatsapp: "972503967230",
   intro: `היי, ראיתי את ההדמיה של האתר שלי (${biz.name})`,
+  builder: "אבישי",
+  studio: "עומק",
+  studioUrl: "https://my-web-three-blue.vercel.app/?utm_source=pitch&utm_medium=demo&utm_campaign=renovation",
 };
 
 export const whatsappUrl = (text: string) =>

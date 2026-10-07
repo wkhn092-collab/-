@@ -8,7 +8,7 @@ import QuoteWizard from "@/components/QuoteWizard";
 import Reveal, { MotionRoot, Stagger, StaggerItem } from "@/components/Reveal";
 import StickyCta from "@/components/StickyCta";
 import TiltCard from "@/components/TiltCard";
-import { biz, pitchMessage, sampleRating, sampleStats, services, whatsappUrl } from "@/content";
+import { biz, pitch, pitchMessage, sampleRating, sampleStats, services, whatsappUrl } from "@/content";
 
 const IMG = "/demo/renovation";
 const shareTitle = `${biz.name}: האתר שלך מוכן לצפייה`;
@@ -56,7 +56,10 @@ export default function DemoPage() {
   return (
     <MotionRoot>
       <div className="sticky top-0 z-50 bg-amber px-4 py-1.5 text-center text-xs font-bold text-ink sm:text-sm">
-        הדמיה שהוכנה במיוחד עבורך · לא פורסמה ברשת · שם, פרטים ותמונות לדוגמה
+        הדמיה שהוכנה במיוחד עבורך · לא פורסמה ברשת · שם, פרטים ותמונות לדוגמה ·{" "}
+        <a href={pitch.studioUrl} target="_blank" rel="noopener" className="underline underline-offset-2">
+          מאת {pitch.studio}
+        </a>
       </div>
 
       <header className="absolute inset-x-0 top-8 z-30">
@@ -351,6 +354,16 @@ export default function DemoPage() {
       <footer className="border-t border-ink/10 px-5 pb-28 pt-8 text-center text-xs leading-relaxed text-slate md:pb-8">
         <p>הדמיה פרטית. שם העסק, הטלפון, המספרים והתמונות הם לדוגמה בלבד, ויוחלפו בפרטים שלך.</p>
         <p>האתר לא נסרק במנועי חיפוש ולא אוסף מידע על גולשים.</p>
+        <p className="mt-3 text-sm text-ink">
+          ההדמיה נבנתה בשבילך על ידי {pitch.builder},{" "}
+          <a href={pitch.studioUrl} target="_blank" rel="noopener" className="font-bold underline underline-offset-2">
+            סטודיו {pitch.studio}
+          </a>
+          {" · "}
+          <a href={whatsappUrl(quickMessage)} target="_blank" rel="noopener noreferrer" className="font-bold underline underline-offset-2">
+            לדבר איתי בוואטסאפ
+          </a>
+        </p>
       </footer>
 
       <StickyCta watchId="hero-cta" hideOnIds={HIDE_STICKY_ON} />
