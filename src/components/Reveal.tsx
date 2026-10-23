@@ -1,20 +1,29 @@
-"use client";
+'use client';
 
-import { MotionConfig, motion, type HTMLMotionProps, type Variants } from "framer-motion";
-import type { ReactNode } from "react";
+import { MotionConfig, motion, useReducedMotion, type HTMLMotionProps, type Variants } from 'framer-motion';
+import type { ReactNode } from 'react';
 
-const viewport = { once: true, margin: "-60px" } as const;
+/** amount works better on phones than a negative margin (sticky bars shrink the visible area). */
+const viewport = { once: true, amount: 0.12 } as const;
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export function MotionRoot({ children }: { children: ReactNode }) {
   return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }
 
-export default function Reveal({ delay = 0, children, ...rest }: HTMLMotionProps<"div"> & { delay?: number }) {
+/**
+ * Soft rise into place. Opacity is never animated to 0 — on mobile, IntersectionObserver
+ * sometimes never flips whileInView, and content would stay invisible forever.
+ */
+export default function Reveal({ delay = 0, children, ...rest }: HTMLMotionProps<'div'> & { delay?: number }) {
+  const reduce = useReducedMotion();
+  if (reduce) {
+    return <div {...rest}>{children}</div>;
+  }
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ y: 16 }}
+      whileInView={{ y: 0 }}
       viewport={viewport}
       transition={{ duration: 0.5, ease, delay }}
       {...rest}
@@ -25,11 +34,15 @@ export default function Reveal({ delay = 0, children, ...rest }: HTMLMotionProps
 }
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },
+  hidden: { y: 16 },
+  show: { y: 0, transition: { duration: 0.5, ease } },
 };
 
-export function Stagger({ children, ...rest }: HTMLMotionProps<"div">) {
+export function Stagger({ children, ...rest }: HTMLMotionProps<'div'>) {
+  const reduce = useReducedMotion();
+  if (reduce) {
+    return <div {...rest}>{children}</div>;
+  }
   return (
     <motion.div
       initial="hidden"
@@ -43,7 +56,11 @@ export function Stagger({ children, ...rest }: HTMLMotionProps<"div">) {
   );
 }
 
-export function StaggerItem({ children, ...rest }: HTMLMotionProps<"div">) {
+export function StaggerItem({ children, ...rest }: HTMLMotionProps<'div'>) {
+  const reduce = useReducedMotion();
+  if (reduce) {
+    return <div {...rest}>{children}</div>;
+  }
   return (
     <motion.div variants={itemVariants} {...rest}>
       {children}
